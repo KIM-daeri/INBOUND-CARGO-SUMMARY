@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>INBOUND CARGO SUMMARY FOR ULSAN</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+         background: #f0f2f5; color: #2c3e50; }
+  .header { background: #1a2a4a; color: white; padding: 16px 24px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 8px; }
+  .header h1 { font-size: 1.3rem; }
+  .header .sub { font-size: 0.8rem; opacity: 0.7; margin-top: 2px; }
+  .header .upd { font-size: 0.75rem; opacity: 0.6; text-align: right; line-height: 1.6; }
+  .container { max-width: 900px; margin: 0 auto; padding: 16px; }
+  .card { background: white; border-radius: 12px; padding: 20px;
+          box-shadow: 0 2px 8px rgba(0,0,0,.08); margin-bottom: 16px; }
+  .section-title { font-size: 0.9rem; font-weight: 600; color: #7f8c8d;
+                   text-transform: uppercase; letter-spacing: .05em;
+                   margin-bottom: 14px; }
+  .picker { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; }
+  .pick { flex: 0 0 auto; background: white; border: 2px solid #e4e8ed; border-radius: 10px;
+          padding: 10px 16px; cursor: pointer; text-align: left; font: inherit;
+          color: inherit; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+  .pick:hover { border-color: #b9c4d0; }
+  .pick[aria-current="true"] { border-color: #1a2a4a; background: #1a2a4a; color: white; }
+  .pick .nm { font-size: 0.95rem; font-weight: 700; display: block; }
+  .pick .vy { font-size: 0.8rem; opacity: .75; }
+  .pick .ttl { font-size: 0.72rem; opacity: .65; display: block; margin-top: 3px; }
+  .vessel-hd { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+               margin-bottom: 4px; }
+  .vessel-hd h2 { font-size: 1.35rem; color: #1a2a4a; }
+  .vessel-hd .voy { font-size: 1.05rem; font-weight: 600; color: #7f8c8d; }
+  .tag { margin-left: auto; background: #1a2a4a; color: white; border-radius: 6px;
+         padding: 4px 10px; font-size: 0.75rem; font-weight: 600; letter-spacing: .06em; }
+  .meta { font-size: 0.78rem; color: #7f8c8d; line-height: 1.8; }
+  .sum { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+  .sum th { width: 132px; background: #1a2a4a; color: white; border-radius: 8px 0 0 8px;
+            font-size: 0.8rem; letter-spacing: .04em; padding: 16px 12px; text-align: center; }
+  .sum th.sp { background: #c0392b; }
+  .sum th.wt { background: #7f8c8d; }
+  .sum td { background: #f8f9fa; border-radius: 0 8px 8px 0; padding: 16px 18px;
+            text-align: left; font-size: 0.92rem; border-bottom: 0; }
+  .sum .big { font-size: 1.7rem; font-weight: 700; color: #1a2a4a;
+              vertical-align: -2px; margin-right: 3px; }
+  .sum b { font-weight: 700; }
+  .sum .sep { color: #cfd6dd; margin: 0 10px; }
+  .dg { color: #c0392b; } .rf { color: #16a085; } .oog { color: #8e44ad; }
+  .zero { color: #b7c0c8; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th { background: #f8f9fa; padding: 9px 12px; text-align: center; font-weight: 600;
+       color: #7f8c8d; font-size: 0.78rem; letter-spacing: .04em; }
+  td { padding: 9px 12px; text-align: center; border-bottom: 1px solid #f0f0f0; }
+  td.k { font-weight: 600; }
+  tr.sub td { background: #eef3f8; font-weight: 700; }
+  tr.grand td { background: #1a2a4a; color: white; font-weight: 700; border: 0; }
+  td.n { font-weight: 700; color: #c0392b; }
+  .band { border-radius: 10px; padding: 11px 18px; margin: 22px 0 14px;
+          font-size: 0.95rem; font-weight: 700; letter-spacing: .08em;
+          color: white; background: #1a2a4a; }
+  .band.other { background: #7f8c8d; }
+  .th-e { background: #eef1f5; }
+  .th-dg { background: #fdeceb; color: #c0392b; }
+  .th-rf { background: #e6f5f2; color: #16a085; }
+  .th-oog { background: #f1ecfa; color: #8e44ad; }
+  tr.tot td { background: #eef3f8; font-weight: 700; border-top: 2px solid #dfe6ee; }
+  td.e { background: #fafbfc; }
+  tr.alt td { background: #fafbfc; }
+  td.l { text-align: left; }
+  .kind { display: inline-block; font-size: 0.75rem; font-weight: 700;
+          padding: 2px 8px; border-radius: 4px; }
+  .k-dg { background: #fdeceb; color: #c0392b; }
+  .k-rf { background: #e6f5f2; color: #16a085; }
+  .k-oog { background: #f1ecfa; color: #8e44ad; }
+  .scroll { overflow-x: auto; }
+  .none { background: #f8f9fa; border-radius: 8px; padding: 22px 18px;
+          text-align: center; color: #7f8c8d; font-size: 0.9rem; }
+  td.mut { color: #95a5a6; }
+  .note { font-size: 0.75rem; color: #95a5a6; line-height: 1.9; margin-top: 12px; }
+  .foot { text-align: center; font-size: 0.75rem; color: #95a5a6; padding: 8px 0 24px; }
+  .empty { text-align: center; color: #95a5a6; padding: 40px 20px; }
+  @media (max-width: 680px) {
+    .obs-grid { grid-template-columns: repeat(2, 1fr); }
+    .header { flex-direction: column; align-items: flex-start; }
+    .header .upd { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>&#128674; INBOUND CARGO SUMMARY FOR ULSAN</h1>
+  </div>
+  <div class="upd">&#128225; 2026-09-22 14:22 생성<br>항차 2건 &middot; 저장 후 168시간 보관</div>
+</div>
+
+<div class="container">
+  <div class="picker" id="picker"></div>
+  <div id="pane"></div>
+  <div class="foot">INBOUND CARGO SUMMARY AI AGENT &middot; 컨테이너 한 대씩의 전체 목록은 메일에 첨부된 엑셀에 있습니다.</div>
+</div>
+
+<script>
+var PLANS = [{"id": "SWAT-2609N-KRUSN", "code": "SWAT", "vessel": "SAWASDEE ATLANTIC", "voyage": "2609N", "pod": "KRUSN", "podKr": "울산항", "podEn": "ULSAN", "etd": "2026-09-19", "updated": "2026-09-22 14:22", "savedAt": 1790054566837, "total": 32, "full": 29, "empty": 3, "c20": 29, "c40": 3, "c45": 0, "dg": 0, "rf": 0, "oog": 0, "cargoMt": 12720.8, "shipTotal": 1068, "shipFull": 863, "operators": [{"opr": "CKL", "f20": 0, "f40": 0, "f45": 0, "e20": 0, "e40": 3, "e45": 0, "tot": 3, "dg": 0, "rf": 0, "oog": 0}, {"opr": "KMD", "f20": 11, "f40": 0, "f45": 0, "e20": 0, "e40": 0, "e45": 0, "tot": 11, "dg": 0, "rf": 0, "oog": 0}, {"opr": "SKR", "f20": 18, "f40": 0, "f45": 0, "e20": 0, "e40": 0, "e45": 0, "tot": 18, "dg": 0, "rf": 0, "oog": 0}], "totals": {"f20": 29, "f40": 0, "f45": 0, "e20": 0, "e40": 3, "e45": 0, "tot": 32, "dg": 0, "rf": 0, "oog": 0}, "specials": [], "otherDg": [{"OPR": "HAS", "CNT": 2, "ROW_BG": "#FFFFFF", "IS_FIRST": 1, "POD_CODE": "KRPUS", "SPAN": 3}, {"OPR": "KMD", "CNT": 12, "ROW_BG": "#FFFFFF", "IS_MORE": 1}, {"OPR": "SKR", "CNT": 8, "ROW_BG": "#FFFFFF", "IS_MORE": 1}, {"IS_GRAND": 1, "LABEL": "OTHER PORTS TOTAL", "CNT": 22}]}, {"id": "PCBJ-2619E-KRUSN", "code": "PCBJ", "vessel": "PACIFIC BEIJING", "voyage": "2619E", "pod": "KRUSN", "podKr": "울산항", "podEn": "ULSAN", "etd": "2026-09-19", "updated": "2026-09-21 17:50", "savedAt": 1789980627188, "total": 59, "full": 59, "empty": 0, "c20": 34, "c40": 25, "c45": 0, "dg": 0, "rf": 0, "oog": 0, "cargoMt": 7523.0, "shipTotal": 483, "shipFull": 477, "operators": [{"opr": "HAS", "f20": 14, "f40": 8, "f45": 0, "e20": 0, "e40": 0, "e45": 0, "tot": 22, "dg": 0, "rf": 0, "oog": 0}, {"opr": "SKR", "f20": 20, "f40": 17, "f45": 0, "e20": 0, "e40": 0, "e45": 0, "tot": 37, "dg": 0, "rf": 0, "oog": 0}], "totals": {"f20": 34, "f40": 25, "f45": 0, "e20": 0, "e40": 0, "e45": 0, "tot": 59, "dg": 0, "rf": 0, "oog": 0}, "specials": [], "otherDg": [{"OPR": "HAS", "CNT": 10, "ROW_BG": "#FFFFFF", "IS_FIRST": 1, "POD_CODE": "KRPUS", "SPAN": 2}, {"OPR": "PCS", "CNT": 2, "ROW_BG": "#FFFFFF", "IS_MORE": 1}, {"IS_GRAND": 1, "LABEL": "OTHER PORTS TOTAL", "CNT": 12}]}];
+var TTL_MS = 168 * 3600 * 1000;
+var sel = PLANS.length ? PLANS[0].id : null;
+
+function esc(v){ return String(v == null ? "" : v).replace(/[&<>"]/g, function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function n(v){ return (typeof v === "number" ? v : 0).toLocaleString("en-US"); }
+
+function leftText(p){
+  if (typeof p.savedAt !== "number") return "";
+  var ms = p.savedAt + TTL_MS - Date.now();
+  if (ms <= 0) return "보관 기간 지남";
+  var m = Math.floor(ms / 60000), h = Math.floor(m / 60);
+  return "삭제까지 남은 시간 " + h + "시간 " + String(m % 60).padStart(2, "0") + "분";
+}
+
+function live(){ return PLANS.filter(function(p){
+  return typeof p.savedAt !== "number" || p.savedAt + TTL_MS > Date.now(); }); }
+
+function renderPicker(){
+  var box = document.getElementById("picker");
+  box.innerHTML = "";
+  live().forEach(function(p){
+    var b = document.createElement("button");
+    b.className = "pick";
+    b.type = "button";
+    b.setAttribute("aria-current", String(p.id === sel));
+    b.innerHTML = '<span class="nm">' + esc(p.vessel || p.code) +
+      ' <span class="vy">' + esc(p.voyage) + '</span></span>' +
+      '<span class="ttl">' + esc(leftText(p)) + '</span>';
+    b.addEventListener("click", function(){ sel = p.id; render(); });
+    box.appendChild(b);
+  });
+}
+
+function figures(p){
+  var size = '20&#39; <b>' + n(p.c20) + '</b><span class="sep">&middot;</span>40&#39; <b>' + n(p.c40) + '</b>';
+  if (p.c45) size += '<span class="sep">&middot;</span>45&#39; <b>' + n(p.c45) + '</b>';
+  function cnt(v, cls){ return '<b class="' + (v ? cls : "zero") + '">' + n(v) + '</b> 대'; }
+  return '<table class="sum"><tbody>' +
+    '<tr><th>TOTAL</th><td><span class="big">' + n(p.total) + '</span> 대' +
+      '<span class="sep">|</span>FULL <b>' + n(p.full) + '</b>' +
+      '<span class="sep">&middot;</span>EMPTY <b>' + n(p.empty) + '</b>' +
+      '<span class="sep">|</span>' + size + '</td></tr>' +
+    '<tr><th class="sp">SPECIAL</th><td>DG ' + cnt(p.dg, "dg") +
+      '<span class="sep">|</span>RF ' + cnt(p.rf, "rf") +
+      '<span class="sep">|</span>OOG ' + cnt(p.oog, "oog") + '</td></tr>' +
+    '<tr><th class="wt">입항 적재 중량</th><td><span class="big">' +
+      (p.cargoMt || 0).toLocaleString("en-US",
+        {minimumFractionDigits: 1, maximumFractionDigits: 1}) + '</span> MT</td></tr>' +
+  '</tbody></table>';
+}
+
+function has45(p){
+  var t = p.totals || {};
+  return (t.f45 || 0) + (t.e45 || 0) > 0;
+}
+
+function detailTable(p){
+  var rows = p.operators || [];
+  if (!rows.length) return "";
+  var t = p.totals || {}, w45 = has45(p);
+  var head = '<tr><th>선사</th>' +
+    "<th>20&#39; FULL</th><th>40&#39; FULL</th>" + (w45 ? "<th>45&#39; FULL</th>" : "") +
+    "<th class='th-e'>20&#39; EMPTY</th><th class='th-e'>40&#39; EMPTY</th>" +
+    (w45 ? "<th class='th-e'>45&#39; EMPTY</th>" : "") +
+    '<th>TOTAL</th><th class="th-dg">DG</th><th class="th-rf">RF</th>' +
+    '<th class="th-oog">OOG</th></tr>';
+  var body = rows.map(function(r){
+    return '<tr><td class="k">' + esc(r.opr) + '</td>' +
+      '<td>' + n(r.f20) + '</td><td>' + n(r.f40) + '</td>' +
+      (w45 ? '<td>' + n(r.f45) + '</td>' : '') +
+      '<td class="e">' + n(r.e20) + '</td><td class="e">' + n(r.e40) + '</td>' +
+      (w45 ? '<td class="e">' + n(r.e45) + '</td>' : '') +
+      '<td><b>' + n(r.tot) + '</b></td>' +
+      '<td class="dg">' + n(r.dg) + '</td>' +
+      '<td class="rf">' + n(r.rf) + '</td>' +
+      '<td class="oog">' + n(r.oog) + '</td></tr>';
+  }).join("");
+  var total = '<tr class="tot"><td>TOTAL</td>' +
+    '<td>' + n(t.f20) + '</td><td>' + n(t.f40) + '</td>' +
+    (w45 ? '<td>' + n(t.f45) + '</td>' : '') +
+    '<td>' + n(t.e20) + '</td><td>' + n(t.e40) + '</td>' +
+    (w45 ? '<td>' + n(t.e45) + '</td>' : '') +
+    '<td>' + n(t.tot) + '</td><td>' + n(t.dg) + '</td>' +
+    '<td>' + n(t.rf) + '</td><td>' + n(t.oog) + '</td></tr>';
+  return '<div class="card"><div class="section-title">&#128203; INBOUND CARGO DETAIL</div>' +
+    '<div class="scroll"><table><thead>' + head + '</thead><tbody>' + body + total +
+    '</tbody></table></div></div>';
+}
+
+function specialTable(p){
+  var rows = p.specials || [];
+  var head = '<div class="card"><div class="section-title">&#9888; SPECIAL CARGO INFORMATION</div>';
+  if (!rows.length){
+    // 없으면 없다고 적어 둡니다 — 확인이 끝났다는 뜻이 되도록.
+    return head + '<div class="none">' + esc(p.podKr || p.pod) +
+      ' 양하 예정 SPECIAL CARGO가 없습니다.</div></div>';
+  }
+  var body = rows.map(function(r){
+    var k = String(r.kind || "");
+    var cls = k.indexOf("DG") >= 0 ? "k-dg" : (k.indexOf("RF") >= 0 ? "k-rf" : "k-oog");
+    return '<tr class="' + (r.grp ? "alt" : "") + '">' +
+      '<td class="mut">' + n(r.no) + '</td>' +
+      '<td class="k">' + esc(r.opr) + '</td>' +
+      '<td class="k">' + esc(r.ctnr) + '</td>' +
+      '<td>' + esc(r.szty) + '</td>' +
+      '<td>' + esc(r.fe) + '</td>' +
+      '<td><span class="kind ' + cls + '">' + esc(k) + '</span></td>' +
+      '<td class="l">' + esc(r.detail) + '</td></tr>';
+  }).join("");
+  return '<div class="card"><div class="section-title">&#9888; SPECIAL CARGO INFORMATION</div>' +
+    '<div class="scroll"><table><thead><tr><th>NO.</th><th>선사</th><th>CNTR NO.</th>' +
+    '<th>SZ/TY</th><th>F/E</th><th>SPECIAL 구분</th><th>CARGO DETAIL</th></tr></thead>' +
+    '<tbody>' + body + '</tbody></table></div></div>';
+}
+
+function otherTable(p){
+  if (!(p.otherDg || []).length) return "";
+  var rows = p.otherDg.map(function(r){
+    if (r.IS_SUB)   return '<tr class="sub"><td colspan="2">' + esc(r.LABEL) + '</td><td>' + n(r.CNT) + '</td></tr>';
+    if (r.IS_GRAND) return '<tr class="grand"><td colspan="2">' + esc(r.LABEL) + '</td><td>' + n(r.CNT) + '</td></tr>';
+    if (r.IS_FIRST) return '<tr><td class="k" rowspan="' + r.SPAN + '">' + esc(r.POD_CODE) + '</td>' +
+      '<td class="k">' + esc(r.OPR) + '</td><td class="n">' + n(r.CNT) + '</td></tr>';
+    return '<tr><td class="k">' + esc(r.OPR) + '</td><td class="n">' + n(r.CNT) + '</td></tr>';
+  }).join("");
+  return '<div class="card"><div class="section-title">&#9888; DG CARGO SUMMARY FOR OTHER PORTS</div>' +
+    '<table><thead><tr><th>양하항</th><th>선사</th><th>DG</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+    '<div class="note">* 선박의 기항 순서 정보는 유동적이므로 아직 AI AGENT에 주입하기 어렵습니다.<br>' +
+    '* 그러므로 통과 화물 여부는 담당자께서 판단 부탁드립니다.</div></div>';
+}
+
+function render(){
+  renderPicker();
+  var list = live();
+  var p = list.filter(function(x){ return x.id === sel; })[0] || list[0];
+  var pane = document.getElementById("pane");
+  if (!p){
+    pane.innerHTML = '<div class="card empty">보관 기간이 남은 항차가 없습니다.<br>' +
+      '프로그램에서 SUMMARY를 한 건 돌리시면 여기에 올라옵니다.</div>';
+    return;
+  }
+  sel = p.id;
+  pane.innerHTML =
+    '<div class="card">' +
+      '<div class="vessel-hd"><h2>M/V ' + esc(p.vessel || p.code) + '</h2>' +
+      '<span class="voy">' + esc(p.voyage) + '</span>' +
+      '<span class="tag">FOR ' + esc(p.podEn || p.pod) + '</span></div>' +
+      '<div class="meta">' + esc(p.code) +
+        (p.etd ? ' &nbsp;&middot;&nbsp; ETD ' + esc(p.etd) : '') +
+        ' &nbsp;&middot;&nbsp; 본선 ' + n(p.shipTotal) + '대 중 ' + esc(p.podKr || p.pod) +
+        ' 양하 ' + n(p.total) + '대 &nbsp;&middot;&nbsp; 작업 ' + esc(p.updated) +
+        ' &nbsp;&middot;&nbsp; ' + esc(leftText(p)) + '</div>' +
+    '</div>' +
+    '<div class="band">FOR ' + esc(p.podEn || p.pod) + '</div>' +
+    '<div class="card"><div class="section-title">&#128202; INBOUND CARGO SUMMARY</div>' +
+      figures(p) + '</div>' +
+    detailTable(p) +
+    specialTable(p) +
+    ((p.otherDg || []).length
+      ? '<div class="band other">FOR OTHER PORTS</div>' + otherTable(p)
+      : '');
+}
+
+render();
+setInterval(render, 60000);          // 남은 시간을 1분마다 다시 셈합니다
+</script>
+
+</body>
+</html>
